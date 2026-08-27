@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nitya Tomar — AWS Cloud Engineer / SRE</title>
+<meta name="description" content="AWS Cloud Engineer and SRE with 6+ years operating large-scale multi-region infrastructure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1218;
+    --panel: #101B24;
+    --panel-2: #142430;
+    --border: #223140;
+    --text: #E7EDF3;
+    --text-dim: #8FA1B0;
+    --text-faint: #5D7080;
+    --ok: #37C6A0;
+    --warn: #F0A340;
+    --accent: #58A6FF;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,18,24,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:56px;
+  }
+  .nav-brand{
+    font-family:var(--mono); font-size:13px; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .pulse-dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--ok);
+    box-shadow:0 0 0 0 rgba(55,198,160,0.6);
+    animation:pulse 2.4s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(55,198,160,0.45);}
+    70%{box-shadow:0 0 0 8px rgba(55,198,160,0);}
+    100%{box-shadow:0 0 0 0 rgba(55,198,160,0);}
+  }
+  .nav-links{display:flex; gap:28px; font-size:13px; color:var(--text-dim);}
+  .nav-links a:hover{color:var(--text);}
+  @media(max-width:640px){ .nav-links{gap:16px; font-size:12px;} }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:72px 0 48px;
+    border-bottom:1px solid var(--border);
+    background:
+      radial-gradient(600px 300px at 15% 0%, rgba(88,166,255,0.08), transparent 60%),
+      radial-gradient(600px 300px at 85% 20%, rgba(55,198,160,0.06), transparent 60%);
+  }
+  .status-line{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12px;
+    color:var(--ok);
+    background:rgba(55,198,160,0.08);
+    border:1px solid rgba(55,198,160,0.25);
+    padding:5px 12px; border-radius:100px;
+    margin-bottom:24px;
+  }
+  h1{
+    font-size:clamp(32px,5vw,52px);
+    font-weight:800;
+    letter-spacing:-0.02em;
+    line-height:1.08;
+    margin-bottom:14px;
+  }
+  h1 span{color:var(--text-dim); font-weight:600;}
+  .hero-sub{
+    font-size:17px; color:var(--text-dim); max-width:560px; margin-bottom:32px;
+  }
+  .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:48px;}
+  .btn{
+    font-family:var(--mono); font-size:13px;
+    padding:10px 18px; border-radius:6px;
+    border:1px solid var(--border);
+    display:inline-flex; align-items:center; gap:8px;
+    transition:border-color .15s, background .15s;
+  }
+  .btn:hover{border-color:var(--accent); background:rgba(88,166,255,0.06);}
+  .btn.primary{background:var(--accent); color:#08131F; border-color:var(--accent); font-weight:600;}
+  .btn.primary:hover{opacity:.9; background:var(--accent);}
+
+  .metric-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    border-radius:10px; overflow:hidden;
+  }
+  @media(max-width:720px){ .metric-grid{grid-template-columns:repeat(2,1fr);} }
+  .metric{
+    background:var(--panel);
+    padding:18px 16px;
+  }
+  .metric .val{
+    font-family:var(--mono); font-size:26px; font-weight:600; color:var(--text);
+  }
+  .metric .val.ok{color:var(--ok);}
+  .metric .lbl{
+    font-size:12px; color:var(--text-faint); margin-top:4px;
+  }
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:64px 0; border-bottom:1px solid var(--border);}
+  .section-head{margin-bottom:32px;}
+  .section-head h2{
+    font-size:22px; font-weight:700; margin-top:6px;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-body{color:var(--text-dim); font-size:15.5px; max-width:680px;}
+  .about-body p{margin-bottom:14px;}
+
+  /* ---------- SKILLS ---------- */
+  .skill-groups{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  @media(max-width:640px){ .skill-groups{grid-template-columns:1fr;} }
+  .skill-card{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:18px 20px;
+  }
+  .skill-card h3{
+    font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--accent); margin-bottom:12px;
+  }
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-family:var(--mono); font-size:12px; color:var(--text-dim);
+    background:var(--panel-2); border:1px solid var(--border);
+    padding:5px 10px; border-radius:5px;
+  }
+
+  /* ---------- EXPERIENCE (status-history style) ---------- */
+  .job{
+    display:grid; grid-template-columns:220px 1fr; gap:24px;
+    padding:24px 0; border-top:1px solid var(--border);
+  }
+  .job:first-of-type{border-top:none;}
+  @media(max-width:720px){ .job{grid-template-columns:1fr; gap:10px;} }
+  .job-meta .role{font-weight:700; font-size:16px; margin-bottom:2px;}
+  .job-meta .org{color:var(--text-dim); font-size:13.5px; margin-bottom:8px;}
+  .job-meta .dates{font-family:var(--mono); font-size:11.5px; color:var(--text-faint);}
+  .uptime-strip{display:flex; gap:2px; margin-top:10px;}
+  .uptime-strip i{
+    flex:1; height:16px; border-radius:2px; background:var(--ok); opacity:.85;
+  }
+  .uptime-strip i.warn{background:var(--warn);}
+  .job-body ul{padding-left:18px; color:var(--text-dim); font-size:14.5px;}
+  .job-body li{margin-bottom:8px;}
+  .job-body li::marker{color:var(--accent);}
+  .job-tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
+
+  /* ---------- INCIDENTS (case studies) ---------- */
+  .incident{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:22px 24px; margin-bottom:16px;
+  }
+  .incident-head{display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap;}
+  .sev{
+    font-family:var(--mono); font-size:11px; font-weight:600;
+    padding:3px 9px; border-radius:4px;
+    background:rgba(240,163,64,0.12); color:var(--warn); border:1px solid rgba(240,163,64,0.3);
+  }
+  .sev.resolved{background:rgba(55,198,160,0.12); color:var(--ok); border-color:rgba(55,198,160,0.3);}
+  .incident h4{font-size:15.5px; font-weight:600;}
+  .incident p{color:var(--text-dim); font-size:14px; margin-top:6px;}
+  .incident .impact{
+    font-family:var(--mono); font-size:12px; color:var(--text-faint); margin-top:10px;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .project-card{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:22px 24px; margin-bottom:16px;
+  }
+  .project-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:8px;}
+  .project-head h4{font-size:16px; font-weight:700;}
+  .project-links{display:flex; gap:8px; flex-wrap:wrap;}
+  .project-links a{
+    font-family:var(--mono); font-size:11.5px;
+    border:1px solid var(--border); border-radius:6px;
+    padding:5px 10px; color:var(--text-dim);
+    transition:border-color .15s, color .15s;
+  }
+  .project-links a:hover{border-color:var(--accent); color:var(--accent);}
+  .project-links a.disabled{
+    opacity:.45; pointer-events:none;
+  }
+  .project-card p{color:var(--text-dim); font-size:14px; margin-top:6px;}
+  .project-tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
+
+  /* ---------- CERTS ---------- */
+  .cert-row{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  @media(max-width:720px){ .cert-row{grid-template-columns:repeat(2,1fr);} }
+  .cert{
+    border:1px solid var(--border); border-radius:8px; padding:14px 14px;
+    font-size:12.5px; color:var(--text-dim); text-align:center;
+    background:var(--panel);
+  }
+
+  /* ---------- CONTACT ---------- */
+  footer{padding:56px 0 40px;}
+  .contact-grid{
+    display:flex; flex-wrap:wrap; gap:14px; margin-top:20px;
+  }
+  .contact-item{
+    font-family:var(--mono); font-size:13.5px;
+    border:1px solid var(--border); border-radius:8px;
+    padding:12px 16px; color:var(--text-dim);
+    display:flex; align-items:center; gap:8px;
+  }
+  .contact-item:hover{border-color:var(--accent); color:var(--text);}
+  .foot-note{margin-top:40px; font-size:12px; color:var(--text-faint); font-family:var(--mono);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-brand"><span class="pulse-dot"></span> nitya-tomar.status</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#incidents">Incidents</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="status-line"><span class="pulse-dot" style="width:6px;height:6px;"></span> All systems operational</div>
+    <h1>Nitya Tomar<br><span>AWS Cloud Engineer &amp; SRE</span></h1>
+    <p class="hero-sub">6+ years operating large-scale, multi-region AWS infrastructure for high-traffic financial platforms — 100M+ events/day, 24x7 on-call, and a habit of finding the leading indicator before the lagging one shows up.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="mailto:nityasingh284@gmail.com">Get in touch</a>
+      <a class="btn" href="https://linkedin.com/in/nitya-tomar-bbab57129" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric"><div class="val ok">99.95%</div><div class="lbl">Uptime maintained</div></div>
+      <div class="metric"><div class="val">100M+</div><div class="lbl">API calls/day supported</div></div>
+      <div class="metric"><div class="val">40%↓</div><div class="lbl">MTTD reduction</div></div>
+      <div class="metric"><div class="val">100+</div><div class="lbl">Incidents/mo triaged</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">// 01 — about</div>
+      <h2>Reliability is the feature</h2>
+    </div>
+    <div class="about-body">
+      <p>I'm an AWS Cloud Engineer and SRE with 6+ years building and operating large-scale, multi-region infrastructure — most recently on a mission-critical KYC platform handling 100M+ API calls a day across three regions.</p>
+      <p>My work sits at the intersection of infrastructure automation and production reliability: Terraform-driven provisioning, CI/CD pipelines, and observability stacks (CloudWatch, Datadog, BigPanda) built to catch problems while they're still quiet metrics — not after they've become outages.</p>
+      <p>I've led incident response and blameless postmortems that cut repeat incidents by 50%, and I like the kind of debugging that starts with "the dashboard looks fine, but something's off."</p>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">// 02 — stack</div>
+      <h2>Tools of the trade</h2>
+    </div>
+    <div class="skill-groups">
+      <div class="skill-card">
+        <h3>Cloud &amp; Infra</h3>
+        <div class="tag-row">
+          <span class="tag">EC2</span><span class="tag">ECS / Fargate</span><span class="tag">EKS</span>
+          <span class="tag">Lambda</span><span class="tag">S3</span><span class="tag">VPC</span>
+          <span class="tag">RDS / Aurora</span><span class="tag">IAM</span><span class="tag">KMS</span>
+          <span class="tag">Kinesis</span><span class="tag">CloudFormation</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>IaC &amp; DevOps</h3>
+        <div class="tag-row">
+          <span class="tag">Terraform</span><span class="tag">Terragrunt</span><span class="tag">Python</span>
+          <span class="tag">Bash</span><span class="tag">Git</span><span class="tag">Jenkins</span>
+          <span class="tag">Helm</span><span class="tag">Docker</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Observability</h3>
+        <div class="tag-row">
+          <span class="tag">Datadog</span><span class="tag">CloudWatch</span><span class="tag">BigPanda</span>
+          <span class="tag">SLI/SLO</span><span class="tag">Error budgets</span><span class="tag">Alert correlation</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Data &amp; Messaging</h3>
+        <div class="tag-row">
+          <span class="tag">Aurora MySQL</span><span class="tag">DynamoDB</span><span class="tag">ElastiCache Redis</span>
+          <span class="tag">SQS</span><span class="tag">SNS</span><span class="tag">Kafka</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">// 03 — experience</div>
+      <h2>Uptime history</h2>
+    </div>
+
+    <div class="job">
+      <div class="job-meta">
+        <div class="role">AWS Cloud Engineer / SRE</div>
+        <div class="org">Tata Consultancy Services — Client: LSEG</div>
+        <div class="dates">APR 2024 — PRESENT</div>
+        <div class="uptime-strip">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="warn"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="job-body">
+        <ul>
+          <li>Managed AWS infrastructure for a mission-critical KYC platform — 100M+ API calls/day across 3 regions, 99.95% uptime.</li>
+          <li>Automated provisioning with Terraform + Terragrunt, cutting manual setup time 70% and config drift 90%.</li>
+          <li>Built CI/CD pipelines (Git + Jenkins), reducing deployment time from 2 hours to 25 minutes.</li>
+          <li>Built CloudWatch + Datadog dashboards across ECS, RDS, Lambda — cut MTTD 40%, MTTR 30%.</li>
+          <li>Reduced Lambda cold-start p99 latency 70% (3s → &lt;900ms) via provisioned concurrency and memory right-sizing.</li>
+          <li>Led P1/P2 incident response and blameless postmortems, reducing repeat incidents by 50%.</li>
+        </ul>
+        <div class="job-tags">
+          <span class="tag">Terraform</span><span class="tag">ECS</span><span class="tag">Datadog</span><span class="tag">Aurora MySQL</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-meta">
+        <div class="role">Systems Engineer</div>
+        <div class="org">TCS — Client: NSK Ltd. &amp; MMC</div>
+        <div class="dates">JAN 2023 — MAR 2024</div>
+        <div class="uptime-strip">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="job-body">
+        <ul>
+          <li>Provisioned and managed multi-user AWS Workspaces with high availability and security compliance.</li>
+          <li>Engineered Transit Gateway configurations for secure, scalable VPC and on-prem connectivity.</li>
+          <li>Managed RDS instances end-to-end — setup, security, backups, monitoring — at 99.9%+ availability.</li>
+        </ul>
+        <div class="job-tags">
+          <span class="tag">Transit Gateway</span><span class="tag">RDS</span><span class="tag">Security Hub</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-meta">
+        <div class="role">Systems Engineer</div>
+        <div class="org">TCS — Client: Microsoft (Azure DevOps)</div>
+        <div class="dates">JUN 2022 — DEC 2022</div>
+        <div class="uptime-strip">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="job-body">
+        <ul>
+          <li>Administered Azure DevOps Server (TFS) at application and database level, including upgrades.</li>
+          <li>Managed SQL Server HA with Always-On and failover cluster instances.</li>
+        </ul>
+        <div class="job-tags">
+          <span class="tag">Azure DevOps</span><span class="tag">SQL Server HA</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-meta">
+        <div class="role">Systems Eng. → Sr. Systems Eng.</div>
+        <div class="org">Infosys — Client: DHS Australia</div>
+        <div class="dates">APR 2020 — APR 2022</div>
+        <div class="uptime-strip">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="job-body">
+        <ul>
+          <li>Led AWS infra activities — VPC security, IAM policies, EC2 provisioning for high-traffic workloads.</li>
+          <li>Built Lambda automation for server scheduling and CloudWatch alarm logging to S3/SNS.</li>
+          <li>Imported existing infrastructure into Terraform for IaC-driven management and drift detection.</li>
+        </ul>
+        <div class="job-tags">
+          <span class="tag">IAM</span><span class="tag">Lambda</span><span class="tag">Terraform</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="incidents">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">// 04 — postmortems</div>
+      <h2>Selected incidents</h2>
+    </div>
+
+    <div class="incident">
+      <div class="incident-head">
+        <span class="sev resolved">RESOLVED</span>
+        <h4>Thread starvation from duplicate report requests</h4>
+      </div>
+      <p>A spike in 423/409 errors on the reporting service correlated with ECS task OOM and task bounce. Root cause: duplicate "generate report" clicks for the same case ID were piling up threads, exhausting the pool and creating memory pressure.</p>
+      <div class="impact">Fix → idempotency + request deduplication proposed at the API layer, filed via Jira</div>
+    </div>
+
+    <div class="incident">
+      <div class="incident-head">
+        <span class="sev resolved">RESOLVED</span>
+        <h4>Aurora History List Length climbing with no visible long-running transaction</h4>
+      </div>
+      <p>RDS CPU looked normal while HLL quietly grew. Traced to idle Sleep-state connections pinning old read views, plus a long-running query on a reader stalling purge on the writer via Aurora's shared storage.</p>
+      <div class="impact">Fix → two-tier response: surgical kill of offending Sleep sessions, then incremental compute drain if needed</div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">// 05 — projects</div>
+      <h2>Things I've built</h2>
+    </div>
+
+    <div class="project-card">
+      <div class="project-head">
+        <h4>Observability Demo — SLIs, SLOs &amp; Error Budget Burn Alerts</h4>
+        <div class="project-links">
+          <a href="https://github.com/nitya-tomar/Observability_Demo" target="_blank" rel="noopener">↗ GitHub</a>
+          <a href="http://18.234.23.17:8080" target="_blank" rel="noopener">↗ Live app*</a>
+          <a href="https://medium.com/@nityasingh284/building-an-error-budget-burn-alert-from-scratch-e3c222005282" target="_blank" rel="noopener">↗ Medium article</a>
+        </div>
+      </div>
+      <p>A Flask API deployed on ECS Fargate / EC2, instrumented with Prometheus, with Grafana dashboards tracking latency and error-rate SLOs. Alerting uses multi-window error-budget burn rate (Google SRE workbook pattern) instead of static thresholds — a fast-burn page for sudden spikes, a slow-burn warn for sustained leaks.</p>
+      <div class="project-tags">
+        <span class="tag">Flask</span><span class="tag">Docker</span><span class="tag">Prometheus</span>
+        <span class="tag">Grafana</span><span class="tag">Terraform</span><span class="tag">ECS Fargate</span>
+      </div>
+    </div>
+    <p style="font-size:11.5px; color:var(--text-faint); font-family:var(--mono); margin-top:-4px;">* live app runs on a personal EC2 instance and may be taken down after the write-up is published — see the GitHub repo for the full source and deployment steps.</p>
+  </div>
+</section>
+
+<section id="certs" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">// 05 — certifications</div>
+      <h2>Credentials</h2>
+    </div>
+    <div class="cert-row">
+      <div class="cert">AWS Certified<br>Solutions Architect – Associate</div>
+      <div class="cert">HashiCorp Certified<br>Terraform Associate</div>
+      <div class="cert">Microsoft Certified<br>Azure Administrator Associate</div>
+      <div class="cert">Microsoft Certified<br>Azure Fundamentals</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="eyebrow">// 06 — contact</div>
+    <h2 style="font-size:22px; font-weight:700; margin-top:6px;">Open to SRE / Cloud roles</h2>
+    <div class="contact-grid">
+      <a class="contact-item" href="mailto:nityasingh284@gmail.com">✉ nityasingh284@gmail.com</a>
+      <a class="contact-item" href="tel:+919074833639">☎ +91-9074833639</a>
+      <a class="contact-item" href="https://linkedin.com/in/nitya-tomar-bbab57129" target="_blank" rel="noopener">↗ LinkedIn</a>
+      <span class="contact-item">📍 Indore, IN</span>
+    </div>
+    <div class="foot-note">© 2026 Nitya Tomar — last deploy: main branch — status: healthy</div>
+  </div>
+</footer>
+
+</body>
+</html>
