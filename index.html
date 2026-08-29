@@ -219,6 +219,42 @@
   .project-card p{color:var(--text-dim); font-size:14px; margin-top:6px;}
   .project-tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
 
+  /* ---------- SERVICES ---------- */
+  .service-row{display:flex; flex-wrap:wrap; gap:14px;}
+  .service-btn{
+    font-family:var(--mono); font-size:13px; color:var(--text-dim);
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    padding:12px 20px; transition:border-color .15s, color .15s;
+  }
+  .service-btn:hover{border-color:var(--accent); color:var(--text);}
+
+  .inquiry-form{
+    margin-top:24px; max-width:520px;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:22px 24px;
+  }
+  .inquiry-form label{
+    display:block; font-family:var(--mono); font-size:11.5px;
+    color:var(--text-faint); text-transform:uppercase; letter-spacing:.04em;
+    margin-bottom:6px; margin-top:16px;
+  }
+  .inquiry-form label:first-of-type{margin-top:0;}
+  .inquiry-form input, .inquiry-form textarea{
+    width:100%; background:var(--panel-2); border:1px solid var(--border);
+    border-radius:6px; padding:10px 12px; color:var(--text);
+    font-family:var(--sans); font-size:14px; resize:vertical;
+  }
+  .inquiry-form input:focus, .inquiry-form textarea:focus{
+    outline:none; border-color:var(--accent);
+  }
+  .inquiry-form button{
+    margin-top:18px; width:100%;
+    font-family:var(--mono); font-size:13px; font-weight:600;
+    background:var(--accent); color:#08131F; border:none;
+    padding:11px 18px; border-radius:6px; cursor:pointer;
+  }
+  .inquiry-form button:hover{opacity:.9;}
+
   /* ---------- CERTS ---------- */
   .cert-row{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
   @media(max-width:720px){ .cert-row{grid-template-columns:repeat(2,1fr);} }
@@ -264,6 +300,7 @@
     <div class="nav-brand"><span class="pulse-dot"></span> nitya-tomar.status</div>
     <div class="nav-links">
       <a href="#about">About</a>
+      <a href="#services">Services</a>
       <a href="#experience">Experience</a>
       <a href="#incidents">Incidents</a>
       <a href="#projects">Projects</a>
@@ -291,6 +328,38 @@
     </div>
   </div>
 </header>
+
+<section id="services" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">// available for freelance</div>
+      <h2>Services</h2>
+    </div>
+    <div class="service-row">
+      <a class="service-btn" href="#inquiry-form" onclick="return selectService('Cloud Management')">Cloud Management</a>
+      <a class="service-btn" href="#inquiry-form" onclick="return selectService('IT Support')">IT Support</a>
+    </div>
+
+    <form class="inquiry-form" id="inquiry-form" action="https://formspree.io/f/meaqovor" method="POST" onsubmit="return sendInquiryToFormspree(event)">
+      <input type="hidden" id="inq-service-type" name="service_type" value="General">
+
+      <label for="inq-name">Full name</label>
+      <input type="text" id="inq-name" name="name" required placeholder="Full name">
+
+      <label for="inq-email">Your email</label>
+      <input type="email" id="inq-email" name="email" required placeholder="you@example.com">
+
+      <label for="inq-query">What do you need help with?</label>
+      <textarea id="inq-query" name="query" rows="3" required placeholder="Briefly describe your project or query"></textarea>
+
+      <label for="inq-budget">Your budget</label>
+      <input type="text" id="inq-budget" name="budget" required placeholder="e.g. ₹15,000 or $200">
+
+      <button type="submit" id="inquiry-submit-btn">Send inquiry →</button>
+    </form>
+    <p style="font-family:var(--mono); font-size:12px; color:var(--text-faint); margin-top:10px;" id="inquiry-fallback-note"></p>
+  </div>
+</section>
 
 <section id="about" class="reveal">
   <div class="wrap">
@@ -515,6 +584,7 @@
   <div class="wrap">
     <div class="eyebrow">// 06 — contact</div>
     <h2 style="font-size:22px; font-weight:700; margin-top:6px;">Open to SRE / Cloud roles</h2>
+    <p style="font-family:var(--mono); font-size:12.5px; color:var(--text-faint); margin-top:6px;">Email is the fastest way to reach me — LinkedIn messages may be missed without Premium.</p>
     <div class="contact-grid">
       <a class="contact-item" href="mailto:nityasingh284@gmail.com">✉ nityasingh284@gmail.com</a>
       <a class="contact-item" href="https://linkedin.com/in/nitya-tomar-bbab57129" target="_blank" rel="noopener">↗ LinkedIn</a>
@@ -525,10 +595,54 @@
 </footer>
 
 <script>
+  // ---------- Service button → pre-select service type and scroll to form ----------
+  function selectService(serviceName) {
+    const field = document.getElementById('inq-service-type');
+    if (field) field.value = serviceName;
+    const form = document.getElementById('inquiry-form');
+    if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const note = document.getElementById('inquiry-fallback-note');
+    if (note) note.textContent = 'Inquiring about: ' + serviceName;
+    return false;
+  }
+
+  // ---------- Inquiry form → Formspree (real submission, lands in inbox automatically) ----------
+  function sendInquiryToFormspree(e) {
+    e.preventDefault();
+    const form = document.getElementById('inquiry-form');
+    const btn = document.getElementById('inquiry-submit-btn');
+    const note = document.getElementById('inquiry-fallback-note');
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    })
+      .then(response => {
+        if (response.ok) {
+          form.reset();
+          btn.textContent = 'Sent ✓';
+          if (note) note.textContent = "Thanks — I'll get back to you soon.";
+        } else {
+          throw new Error('Submission failed');
+        }
+      })
+      .catch(() => {
+        btn.disabled = false;
+        btn.textContent = 'Send inquiry →';
+        if (note) note.textContent = 'Something went wrong — please email nityasingh284@gmail.com directly.';
+      });
+
+    return false;
+  }
+
   // ---------- Email button: copy-to-clipboard fallback ----------
-  function copyEmailFallback(e) {
+  function copyEmailFallback(e, noteId) {
     const email = 'nityasingh284@gmail.com';
-    const note = document.getElementById('email-fallback-note');
+    const note = document.getElementById(noteId || 'email-fallback-note');
     if (navigator.clipboard) {
       navigator.clipboard.writeText(email).then(() => {
         if (note) note.textContent = 'Email copied to clipboard: ' + email;
