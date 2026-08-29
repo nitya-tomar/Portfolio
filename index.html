@@ -241,6 +241,20 @@
   }
   .contact-item:hover{border-color:var(--accent); color:var(--text);}
   .foot-note{margin-top:40px; font-size:12px; color:var(--text-faint); font-family:var(--mono);}
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in-view{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -264,20 +278,21 @@
     <h1>Nitya Tomar<br><span>AWS Cloud Engineer &amp; SRE</span></h1>
     <p class="hero-sub">6+ years operating large-scale, multi-region AWS infrastructure for high-traffic financial platforms — 100M+ events/day, 24x7 on-call, and a habit of finding the leading indicator before the lagging one shows up.</p>
     <div class="hero-actions">
-      <a class="btn primary" href="mailto:nityasingh284@gmail.com">Get in touch</a>
+      <a class="btn primary" href="mailto:nityasingh284@gmail.com" id="get-in-touch-btn" onclick="return copyEmailFallback(event)">Get in touch</a>
       <a class="btn" href="https://linkedin.com/in/nitya-tomar-bbab57129" target="_blank" rel="noopener">LinkedIn ↗</a>
     </div>
+    <p style="font-family:var(--mono); font-size:12px; color:var(--text-faint); margin-top:-24px; margin-bottom:48px;" id="email-fallback-note"></p>
 
     <div class="metric-grid">
-      <div class="metric"><div class="val ok">99.95%</div><div class="lbl">Uptime maintained</div></div>
-      <div class="metric"><div class="val">100M+</div><div class="lbl">API calls/day supported</div></div>
-      <div class="metric"><div class="val">40%↓</div><div class="lbl">MTTD reduction</div></div>
-      <div class="metric"><div class="val">100+</div><div class="lbl">Incidents/mo triaged</div></div>
+      <div class="metric"><div class="val ok" data-count-to="99.95" data-suffix="%">0%</div><div class="lbl">Uptime maintained</div></div>
+      <div class="metric"><div class="val" data-count-to="100" data-suffix="M+">0M+</div><div class="lbl">API calls/day supported</div></div>
+      <div class="metric"><div class="val" data-count-to="40" data-suffix="%↓">0%↓</div><div class="lbl">MTTD reduction</div></div>
+      <div class="metric"><div class="val" data-count-to="100" data-suffix="+">0+</div><div class="lbl">Incidents/mo triaged</div></div>
     </div>
   </div>
 </header>
 
-<section id="about">
+<section id="about" class="reveal">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">// 01 — about</div>
@@ -291,7 +306,7 @@
   </div>
 </section>
 
-<section id="skills">
+<section id="skills" class="reveal">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">// 02 — stack</div>
@@ -333,7 +348,7 @@
   </div>
 </section>
 
-<section id="experience">
+<section id="experience" class="reveal">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">// 03 — experience</div>
@@ -428,7 +443,7 @@
   </div>
 </section>
 
-<section id="incidents">
+<section id="incidents" class="reveal">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">// 04 — postmortems</div>
@@ -455,7 +470,7 @@
   </div>
 </section>
 
-<section id="projects">
+<section id="projects" class="reveal">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">// 05 — projects</div>
@@ -467,7 +482,7 @@
         <h4>Observability Demo — SLIs, SLOs &amp; Error Budget Burn Alerts</h4>
         <div class="project-links">
           <a href="https://github.com/nitya-tomar/Observability_Demo" target="_blank" rel="noopener">↗ GitHub</a>
-          <a href="http://18.234.23.17:3000/explore" target="_blank" rel="noopener">↗ Live app*</a>
+          <a href="http://18.234.23.17:8080/metrics" target="_blank" rel="noopener">↗ Live metrics*</a>
           <a href="https://medium.com/@nityasingh284/building-an-error-budget-burn-alert-from-scratch-e3c222005282" target="_blank" rel="noopener">↗ Medium article</a>
         </div>
       </div>
@@ -481,7 +496,7 @@
   </div>
 </section>
 
-<section id="certs" style="border-bottom:none;">
+<section id="certs" class="reveal" style="border-bottom:none;">
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">// 05 — certifications</div>
@@ -502,7 +517,6 @@
     <h2 style="font-size:22px; font-weight:700; margin-top:6px;">Open to SRE / Cloud roles</h2>
     <div class="contact-grid">
       <a class="contact-item" href="mailto:nityasingh284@gmail.com">✉ nityasingh284@gmail.com</a>
-      <a class="contact-item" href="tel:+919074833639">☎ +91-9074833639</a>
       <a class="contact-item" href="https://linkedin.com/in/nitya-tomar-bbab57129" target="_blank" rel="noopener">↗ LinkedIn</a>
       <span class="contact-item">📍 Indore, IN</span>
     </div>
@@ -510,5 +524,69 @@
   </div>
 </footer>
 
+<script>
+  // ---------- Email button: copy-to-clipboard fallback ----------
+  function copyEmailFallback(e) {
+    const email = 'nityasingh284@gmail.com';
+    const note = document.getElementById('email-fallback-note');
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(email).then(() => {
+        if (note) note.textContent = 'Email copied to clipboard: ' + email;
+      }).catch(() => {
+        if (note) note.textContent = 'Email: ' + email;
+      });
+    } else if (note) {
+      note.textContent = 'Email: ' + email;
+    }
+    // Let the mailto: still attempt to fire normally — don't block it.
+    return true;
+  }
+
+  // ---------- Animated counting metrics ----------
+  function animateCount(el) {
+    const target = parseFloat(el.getAttribute('data-count-to'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    const isDecimal = String(target).includes('.');
+    const duration = 1400;
+    const startTime = performance.now();
+
+    function tick(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+      el.textContent = (isDecimal ? current.toFixed(2) : Math.round(current)) + suffix;
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = (isDecimal ? target.toFixed(2) : target) + suffix;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const countEls = document.querySelectorAll('[data-count-to]');
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCount(entry.target);
+        countObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  countEls.forEach(el => countObserver.observe(el));
+
+  // ---------- Scroll-triggered fade-in ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+</script>
 </body>
 </html>
